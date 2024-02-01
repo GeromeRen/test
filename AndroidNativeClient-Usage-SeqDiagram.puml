@@ -1,0 +1,30 @@
+@startuml
+
+actor       "Native client app"  as Client
+participant UnconfigReaderSysprops
+
+== Compile Time ==
+
+Client -> Client : Allow SE Linux = get_prop(<Native client app>, vendor_ecarx_unconfig_prop)
+
+== Run Time ==
+
+Client -> UnconfigReaderSysprops **: new UnconfigReaderSysprops()
+
+Client -> UnconfigReaderSysprops : WaitReady()
+
+note right
+  Blocking call until
+  configuration is ready
+end note
+
+... Unconfig Ready time ...
+
+UnconfigReaderSysprops --> Client : 
+
+Client -> UnconfigReaderSysprops : ReadExisting("Properety1_Key"): "Properety1_Value"
+...
+Client -> UnconfigReaderSysprops : ReadExisting("ProperetyN_Key"): "ProperetyN_Value"
+
+
+@enduml
